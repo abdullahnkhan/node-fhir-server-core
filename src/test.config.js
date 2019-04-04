@@ -20,7 +20,7 @@ module.exports = {
 	security: [
 		{
 			url: 'authorize',
-			valueUri: 'https://afternoon-springs-39948.herokuapp.com/authorize',
+			valueUri: 'https://fhirapp.herokuapp.com/auth',
 		},
 		{
 			url: 'token',
