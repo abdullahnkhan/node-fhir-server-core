@@ -24,7 +24,7 @@ module.exports = {
 		},
 		{
 			url: 'token',
-			valueUri: 'https://afternoon-springs-39948.herokuapp.com/token',
+			valueUri: 'https://fhirapp.herokuapp.com/token',
 		},
 	],
 	profiles: {
