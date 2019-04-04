@@ -26,7 +26,8 @@ module.exports = {
 		strategy: {
 			name: 'bearer',
 			//useSession: false,
-			service: './src/strategies/bearer.strategy.js'
+			service: './src/auth/passport_strategy'
+			//service: './src/strategies/bearer.strategy.js'
 		}
 	},
 	// Security URLS for Capability Statement
