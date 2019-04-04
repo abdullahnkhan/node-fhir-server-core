@@ -1,4 +1,5 @@
 const FHIRServer = require('./index.js');
+const env = require('var');
 let { VERSIONS } = FHIRServer.constants;
 
 module.exports = {
@@ -16,16 +17,28 @@ module.exports = {
 	logging: {
 		level: 'debug',
 	},
+	auth: {
+		// This servers URI
+		resourceServer: env.RESOURCE_SERVER,
+		//
+		// if you use this strategy, you need to add the corresponding env vars to docker-compose
+		//
+		strategy: {
+			name: 'bearer',
+			//useSession: false,
+			service: './src/strategies/bearer.strategy.js'
+		}
+	},
 	// Security URLS for Capability Statement
 	security: [
 		{
 			url: 'authorize',
-			valueUri: 'https://afternoon-springs-39948.herokuapp.com/authorize',
+			valueUri: 'https://fhirapp.herokuapp.com/authorize'
 		},
 		{
 			url: 'token',
-			valueUri: 'https://afternoon-springs-39948.herokuapp.com/token',
-		},
+			valueUri: 'https://fhirapp.herokuapp.com/token'
+		}
 	],
 	profiles: {
 		Appointment: {
