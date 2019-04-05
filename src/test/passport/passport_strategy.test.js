@@ -3,8 +3,8 @@ const http = require('http');
 const sinon = require('sinon');
 const MockRequest = require('readable-mock-req');
 const { expect } = require('chai');
-const Strategy = require('../../src/auth/passport_strategy');
-const Issuer = require('../../src/auth/issuer');
+
+const { Issuer, Strategy } = require('../../lib');
 
 ['useGot', 'useRequest'].forEach((httpProvider) => {
   describe(`OpenIDConnectStrategy - using ${httpProvider.substring(3).toLowerCase()}`, function () {
