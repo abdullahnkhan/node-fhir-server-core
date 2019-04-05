@@ -1,6 +1,17 @@
 const Server = require('./server/server');
 const constants = require('./constants');
 const { resolveFromVersion } = require('./server/utils/resolve.utils');
+const Issuer = require('./auth/issuer');
+const Registry = require('./auth/issuer_registry');
+const Strategy = require('./auth/passport_strategy');
+const TokenSet = require('./auth/token_set');
+
+module.exports = {
+  Issuer,
+  Registry,
+  Strategy,
+  TokenSet,
+};
 
 /**
  * @name exports

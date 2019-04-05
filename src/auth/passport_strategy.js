@@ -12,6 +12,8 @@ const OpenIdConnectError = require('./open_id_connect_error');
 const Client = require('./client');
 const random = require('./util/random');
 
+
+
 function verified(err, user, info = {}) {
   if (err) {
     this.error(err);
