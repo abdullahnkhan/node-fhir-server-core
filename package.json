@@ -84,7 +84,7 @@
     "nock": "^9.1.5",
     "nodemon": "^1.18.6",
     "prettier": "^1.15.3",
-    "readable-mock-req": "^0.2.2",
+    "readable-mock-q": "^0.2.2",
     "sinon": "^7.3.1",
     "supertest": "^3.0.0",
     "timekeeper": "^2.2.0"

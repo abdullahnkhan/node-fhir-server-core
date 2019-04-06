@@ -23,11 +23,11 @@ const { Issuer, Strategy } = require('../../lib');
 
     beforeEach(function () {
       this.issuer = new Issuer({
-        issuer: 'https://op.example.com',
-        authorization_endpoint: 'https://op.example.com/auth',
-        jwks_uri: 'https://op.example.com/jwks',
-        token_endpoint: 'https://op.example.com/token',
-        userinfo_endpoint: 'https://op.example.com/userinfo',
+        issuer: 'https://fhirapp.herokuapp.com',
+        authorization_endpoint: 'https://fhirapp.herokuapp.com/auth',
+        jwks_uri: 'https://fhirapp.herokuapp.com/jwks',
+        token_endpoint: 'https://fhirapp.herokuapp.com/token',
+        userinfo_endpoint: 'https://fhirapp.herokuapp.com/userinfo',
         code_challenge_methods_supported: ['plain', 'S256'],
       });
 
@@ -35,7 +35,7 @@ const { Issuer, Strategy } = require('../../lib');
         client_id: 'foo',
         client_secret: 'barbaz',
         respose_types: ['code'],
-        redirect_uris: ['http://rp.example.com/cb'],
+        redirect_uris: ['https://angular-test-fhir.netlify.com/assets/signin-callback.html'],
       });
     });
 
@@ -70,8 +70,8 @@ const { Issuer, Strategy } = require('../../lib');
         const target = strategy.redirect.firstCall.args[0];
         expect(target).to.include('redirect_uri=');
         expect(target).to.include('scope=');
-        expect(req.session).to.have.property('oidc:op.example.com');
-        expect(req.session['oidc:op.example.com']).to.have.keys('state', 'response_type');
+        expect(req.session).to.have.property('oidc:fhirapp.herokuapp.com');
+        expect(req.session['oidc:fhirapp.herokuapp.com']).to.have.keys('state', 'response_type');
       });
 
       it('starts authentication requests for POSTs', function () {
@@ -88,8 +88,8 @@ const { Issuer, Strategy } = require('../../lib');
         const target = strategy.redirect.firstCall.args[0];
         expect(target).to.include('redirect_uri=');
         expect(target).to.include('scope=');
-        expect(req.session).to.have.property('oidc:op.example.com');
-        expect(req.session['oidc:op.example.com']).to.have.keys('state', 'response_type');
+        expect(req.session).to.have.property('oidc:fhirapp.herokuapp.com');
+        expect(req.session['oidc:fhirapp.herokuapp.com']).to.have.keys('state', 'response_type');
       });
 
       it('can have redirect_uri and scope specified', function () {
@@ -134,8 +134,8 @@ const { Issuer, Strategy } = require('../../lib');
         expect(target).to.include('scope=');
         expect(target).to.include('nonce=');
         expect(target).to.include('response_mode=form_post');
-        expect(req.session).to.have.property('oidc:op.example.com');
-        expect(req.session['oidc:op.example.com']).to.have.keys('state', 'nonce', 'response_type');
+        expect(req.session).to.have.property('oidc:fhirapp.herokuapp.com');
+        expect(req.session['oidc:fhirapp.herokuapp.com']).to.have.keys('state', 'nonce', 'response_type');
       });
 
       describe('use pkce', () => {
@@ -206,8 +206,8 @@ const { Issuer, Strategy } = require('../../lib');
           const target = strategy.redirect.firstCall.args[0];
           expect(target).to.include('code_challenge_method=S256');
           expect(target).to.include('code_challenge=');
-          expect(req.session).to.have.property('oidc:op.example.com');
-          expect(req.session['oidc:op.example.com']).to.have.property('code_verifier');
+          expect(req.session).to.have.property('oidc:fhirapp.herokuapp.com');
+          expect(req.session['oidc:fhirapp.herokuapp.com']).to.have.property('code_verifier');
         });
 
         it('can be set to use PKCE (plain)', function () {
@@ -226,15 +226,15 @@ const { Issuer, Strategy } = require('../../lib');
           const target = strategy.redirect.firstCall.args[0];
           expect(target).not.to.include('code_challenge_method');
           expect(target).to.include('code_challenge=');
-          expect(req.session).to.have.property('oidc:op.example.com');
-          expect(req.session['oidc:op.example.com']).to.have.property('code_verifier');
+          expect(req.session).to.have.property('oidc:fhirapp.herokuapp.com');
+          expect(req.session['oidc:fhirapp.herokuapp.com']).to.have.property('code_verifier');
         });
       });
 
       it('can have session key specifed', function () {
         const strategy = new Strategy({
           client: this.client,
-          sessionKey: 'oidc:op.example.com:foo',
+          sessionKey: 'oidc:fhirapp.herokuapp.com:foo',
         }, () => {});
 
         const req = new MockRequest('GET', '/login/oidc');
@@ -243,8 +243,8 @@ const { Issuer, Strategy } = require('../../lib');
         strategy.redirect = sinon.spy();
         strategy.authenticate(req);
 
-        expect(req.session).to.have.property('oidc:op.example.com:foo');
-        expect(req.session['oidc:op.example.com:foo']).to.have.keys('state', 'response_type');
+        expect(req.session).to.have.property('oidc:fhirapp.herokuapp.com:foo');
+        expect(req.session['oidc:fhirapp.herokuapp.com:foo']).to.have.keys('state', 'response_type');
       });
     });
 
@@ -264,7 +264,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?code=foobar&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             state: 'state',
             response_type: 'code',
@@ -279,7 +279,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?error=server_error&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             state: 'state',
             response_type: 'code',
@@ -306,7 +306,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         strategy.error = (error) => {
           try {
-            expect(error.message).to.eql('did not find expected authorization request details in session, req.session["oidc:op.example.com"] is undefined');
+            expect(error.message).to.eql('did not find expected authorization request details in session, req.session["oidc:fhirapp.herokuapp.com"] is undefined');
             next();
           } catch (err) {
             next(err);
@@ -325,7 +325,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?code=code&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             state: 'state',
             response_type: 'code',
@@ -349,7 +349,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?error=login_required&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             state: 'state',
             response_type: 'code',
@@ -380,7 +380,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?code=foo&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             state: 'state',
             response_type: 'code',
@@ -411,7 +411,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?code=foo&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             response_type: 'code',
             state: 'state',
@@ -447,7 +447,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?code=foo&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             response_type: 'code',
             state: 'state',
@@ -479,7 +479,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?code=foo&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             response_type: 'code',
             state: 'state',
@@ -514,7 +514,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?code=foo&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             response_type: 'code',
             state: 'state',
@@ -554,7 +554,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?code=foo&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             response_type: 'code',
             state: 'state',
@@ -590,7 +590,7 @@ const { Issuer, Strategy } = require('../../lib');
 
         const req = new MockRequest('GET', '/login/oidc/callback?code=foo&state=state');
         req.session = {
-          'oidc:op.example.com': {
+          'oidc:fhirapp.herokuapp.com': {
             nonce: 'nonce',
             response_type: 'code',
             state: 'state',
